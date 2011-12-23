@@ -8,8 +8,9 @@
  * Copyright (C) 2011 Akira Hayakawa <ruby.wktk@gmail.com>
  */
 
-#include <linux/device-mapper.h>
+#include <string.h>
 
+#include <linux/device-mapper.h>
 #include <linux/module.h>
 #include <linux/init.h>
 #include <linux/bio.h>
@@ -20,9 +21,6 @@ static char *str_rep = "akiradeveloper"; /* default */
 module_param(str_rep, charp, S_IRUGO);
 MODULE_PARM_DESC(str_rep, "string to repeat");
 
-/*
- * Construct a dummy mapping that only returns repeats
- */
 static int repeat_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 {
 	if (argc != 0) {
@@ -72,9 +70,6 @@ void repeat_fill_bio(struct bio *bio, char *s)
 	}
 }
 
-/*
- * Return repeats only on reads
- */
 static int repeat_map(struct dm_target *ti, struct bio *bio,
 		      union map_info *map_context)
 {
