@@ -87,17 +87,18 @@ void repeat_fill_bio(struct bio *bio, char *s)
 	struct bio_vec *bv;
 	int i;
 
+	int offset = 0;
+
 	bio_for_each_segment(bv, bio, i) {
 		char *data = bvec_kmap_irq(bv, &flags);
 
 		struct byteseq *result = parse_arg(repseq);
-		int offset = 0;
 		repeat_fill_mem(data, bv->bv_len, result->src, result->size, offset);
 		free_byteseq(result);
 
 		flush_dcache_page(bv->bv_page);
 		bvec_kunmap_irq(data, &flags);
-		offset = (offset + bv->bv_len) % len;
+		offset = (offset + bv->bv_len) % result->size;
 	}
 }
 
