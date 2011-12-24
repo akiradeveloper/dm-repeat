@@ -36,7 +36,7 @@ static int repeat_ctr(struct dm_target *ti, unsigned int argc, char **argv)
 	return 0;
 }
 
-void repeat_fill_mem(void *data, size_t len_data, void *s, size_t offset)
+void repeat_fill_mem(void *data, size_t len_data, char *s, size_t offset)
 {
 	int i;
 	int sl = strlen(s);
