@@ -49,7 +49,7 @@ struct byteseq *parse_arg(char *s)
 		printf("given arg not start with 0x\n");
 		exit(1);
 	}
-	char *buf = "xx"; 
+	char buf[3]; buf[2] = '\0';
 	int i, j;
 	unsigned int dx;
 	char cx;
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 {
 	struct byteseq *result = parse_arg(argv[1]);
 	char dest[5];
-	repeat_fill_mem(dest, 5, result->src, result->size, 1);
+	repeat_fill_mem(dest, 5, result->src, result->size, atoi(argv[2]));
 	dump(dest, 5);
 	free_byteseq(result);
 	return 0;
