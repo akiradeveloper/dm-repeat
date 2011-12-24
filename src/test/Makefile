@@ -6,6 +6,7 @@ arg:
 	gcc -g -O0 -Wall arg.c
 	./a.out 0xff 0
 	./a.out 0xff 1
+	# ./a.out 0bff00 1 # 0b prefix not supported　
 	./a.out 0xff00 1
 	./a.out 0xff00 0
 	./a.out 0xa53E 0 # if capitalized included
