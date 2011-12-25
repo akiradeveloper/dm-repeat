@@ -50,7 +50,7 @@ struct byteseq *parse_arg(char *s)
 	result->src = src;
 	result->size = sz;
 
-	int r = startw(s, "0x"); BUG_ON( !r );
+	int r = startw(s, "0x"); BUG_ON(!r);
 
 	char buf[3]; buf[2] = '\0';
 	int i, j;
@@ -74,7 +74,7 @@ void repeat_fill_mem(void *dest, size_t destlen, void *src, size_t srclen, size_
 		memcpy(dest+i, src+offset, step);
 		i += step;
 		offset = 0;
-		if(i+srclen >= destlen){
+		if(unlikely(i+srclen >= destlen)){
 			step = destlen - i;
 		} else {
 			step = srclen;
