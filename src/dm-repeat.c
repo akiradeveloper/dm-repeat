@@ -18,9 +18,10 @@
 #define DM_MSG_PREFIX "repeat"
 
 static char *repseq = "0xff"; /* default */
-module_param(repseq, charp, S_IRUGO);
+module_param(repseq, charp, S_IRUGO | S_IWUSR);
 MODULE_PARM_DESC(repseq, "byte sequence to repeat");
 
+/* immutable result of parsing the given 0x expression */
 struct byteseq {
 	size_t size;
 	void *src;
@@ -87,19 +88,19 @@ void repeat_fill_bio(struct bio *bio, char *s)
 	struct bio_vec *bv;
 	int i;
 
-	int offset = 0;
+	struct byteseq *result = parse_arg(repseq);
+	int offset = to_bytes(bio->bi_sector) % result->size;
 
 	bio_for_each_segment(bv, bio, i) {
 		char *data = bvec_kmap_irq(bv, &flags);
 
-		struct byteseq *result = parse_arg(repseq);
 		repeat_fill_mem(data, bv->bv_len, result->src, result->size, offset);
-		free_byteseq(result);
 
 		flush_dcache_page(bv->bv_page);
 		bvec_kunmap_irq(data, &flags);
 		offset = (offset + bv->bv_len) % result->size;
 	}
+	free_byteseq(result);
 }
 
 static int repeat_map(struct dm_target *ti, struct bio *bio,
