@@ -1,0 +1,12 @@
+*.swp
+*.o
+*.ko
+.*
+*.mod.c
+*.mod.o
+*a.out
+Module.symvers
+modules.order
+err
+msg
+!.gitignore

@@ -1,6 +1,6 @@
 obj-m := dm-repeat.o
 
-KERNEL_TREE := /home/akiradeveloper/src/linux-3.1.5/
+KERNEL_TREE := /home/akira/src/linux
 PWD := $(shell pwd)
 EXTRA_CFLAGS='-Wall'
 
